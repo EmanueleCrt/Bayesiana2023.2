@@ -1,0 +1,19 @@
+
+install.packages("nleqslv")
+
+library(nleqslv)
+
+l = function(theta, soma, n) theta^soma*(1-theta)^(n-soma)
+
+### Priori e Posteriori ###
+
+
+prior.f = function(theta) 1/sqrt(theta*(1-theta)) 
+pos = function(theta,a, b) (theta^(a-1)*(1-theta)^(b-1)/beta(a,b))
+
+### Curvas ###
+
+
+curve(pos(theta, a=2+0.5,20-2+0.5), from=0, to=1, xname="theta", add=TRUE)
+curve(l(theta, 2, 20), from=0, to=1, xname ="theta", add = TRUE)
+curve(prior.f(theta), from=0, to=1, xname="theta", add = TRUE)
