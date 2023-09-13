@@ -1,4 +1,6 @@
 
+### Aula 13/09 ###
+
 install.packages("nleqslv")
 
 library(nleqslv)
@@ -17,3 +19,28 @@ pos = function(theta,a, b) (theta^(a-1)*(1-theta)^(b-1)/beta(a,b))
 curve(pos(theta, a=2+0.5,20-2+0.5), from=0, to=1, xname="theta", add=TRUE)
 curve(l(theta, 2, 20), from=0, to=1, xname ="theta", add = TRUE)
 curve(prior.f(theta), from=0, to=1, xname="theta", add = TRUE)
+
+### Modelo Benoulli - Beta com priori informativa ###
+
+# Agora, suponha que um espacialista afirma que a média a priori 0.7 e que a vaiância
+# é 0.005, assim temos uma priori informativa a partir dessas informações.
+# Precisamos encontrar os híper-parâmetros a e b da distribuição beta.
+
+library(nleqslv)
+
+target <- function(x, c, d){
+  y = numeric(2)
+  y[1] = x[1]/(x[1] + x[2]) - c
+  y[2] = x[1]*x[2]/((x[1] + x[2])^2*(x[1] + x[2] + 1)) - d
+  y
+}
+
+xstart = c(5, 5)
+
+nleqslv(xstart, target, c = 0.7, d = 0.005)
+
+curve(dbeta(x, shape1=28.7, shape2 = 12.3))
+curve(dbeta(x, shape1=15.3, shape2 = 1.7), add = TRUE)
+
+
+
