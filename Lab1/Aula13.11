@@ -44,3 +44,50 @@ marca 'model' clica em 'check model' -> marca 'list' e clica em 'load data', dep
 'density' -> graficos das densidades marginais a posteriori
 
 'history' -> como a cadeia de markov se comporta, percebe-se convergncia? 
+
+
+Model{
+for (i in 1:N) {
+zeros[i] <- 0
+lambda[i] <- log(a)+log(b)+ (a-1)*log(y[i])+(b-1)*log(1-pow(y[i],a))
+zeros[i]~dloglik(lambda[i])
+}
+a~dgamma(4,6)
+b~dgamma(3,8)
+}
+
+#Dados:
+list(y=c(.22,.12,.45,.33,.41,.56,.22,.15,.5,.10), N=10)
+
+#Valores inicias:
+list(b=0.000108, s=1500000, beta=0.000079)
+
+
+
+
+Model{
+for (i in 1:N) {
+x[i]~dt(mu,tau,d)
+}
+tau <- 1/sigma2
+mu ~ dnorm(mu0,tau0)
+tau0 <- 1/sigma20
+#sigma2 ~ dgamma(alpha,beta)
+sigma2 ~ dgamma(0.001,0.001) #priori nao informativa
+d <- 4
+mu0 <- 20
+sigma20 <- 5
+alpha <- 3
+beta <- 8
+xp ~ dt(mu, tau, d)
+}
+
+#Dados
+list(x=c(22,12,45,33,41,56,22,15,5,10), N=10)
+
+#Valores inicias:
+list(sigma2 =10000,mu=5000)
+
+
+
+
