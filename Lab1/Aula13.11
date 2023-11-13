@@ -1,0 +1,46 @@
+### Programa OpenBUGS ###
+
+Model{
+for (i in 1:N) {
+x[i] ~ dt(mu,tau,d)
+}
+tau <- 1/sigma2
+mu ~ dnorm(mu0,tau0)
+tau0 <- 1/sigma20
+#sigma2 ~ dgamma(alpha,beta)
+sigma2 ~ dgamma(0.001,0.001) # Priori nao informativa
+d<-4
+mu0<-20
+sigma20 <- 5
+alpha <- 3
+beta <-8
+}
+
+#Dados:
+list(x=c(22,12,45,33,41,56,22,15,5,10), N=10)
+
+#Valores inicias:
+list(sigma2=10000,mu=5000)
+
+
+1) Model -> specification 
+
+marca 'model' clica em 'check model' -> marca 'list' e clica em 'load data', depois clica em 'compile'
+
+2) gerar valores iniciais: 'gen inits', ou declarar valores iniciais para os parametros necessarios, atraves de uma lista: ex: list(mu=10, sigma2=1).
+
+3) apos os passos acima, deve ter uma mensagem 'model initialized', indicando q estamos prontos para simular.
+
+4) deve-se abrir as janelas: Model -> Update e Inference -> Sampling
+
+5) em sample monitor tool, escreva o nome de cada parametro q se deseja monitorar (ie guardar as amostras) e clica em 'set', ao final escrever '*' para indicar que todos os parametros digitados devem ser monitorados.
+
+6) Update tool, definir o No de valores a serem gerados da dist a posterior: Updates->10000, clicar em 'update'.
+
+7) Volta-se para as inferencias: janela 'sample monitor tool'
+
+'stats' -> os sumarios das distribuições marginais de cada parametro
+
+'density' -> graficos das densidades marginais a posteriori
+
+'history' -> como a cadeia de markov se comporta, percebe-se convergncia? 
